@@ -1,5 +1,10 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
+/legacy
+package-lock.json
+nodemon.json
+*.zip
+
 # compiled output
 /dist
 /tmp

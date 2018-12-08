@@ -1,0 +1,19 @@
+{
+  "name": "stoxy",
+  "version": "0.0.0",
+  "scripts": {
+    "start:server": "nodemon ./backend/server.js"
+  },
+  "private": true,
+  "dependencies": {
+    "core-js": "^2.5.4",
+    "express": "^4.16.4",
+    "rxjs": "~6.2.0",
+    "zone.js": "~0.8.26",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.3",
+    "jsonwebtoken": "^8.3.0",
+    "mongoose": "^5.2.14",
+    "mongoose-unique-validator": "^2.0.1"
+  }
+}
