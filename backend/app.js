@@ -17,6 +17,7 @@ mongoose.connect(process.env.DATABASE_URL)
   });
 
 
+const smokeTestRoutes = require('./routes/smoke_test');
 
 // const gameRoutes = require('./routes/games');
 // const roomRoutes = require('./routes/rooms');
@@ -41,6 +42,8 @@ app.use((req, res, next) => {
   );
   next();
 });
+
+app.use('/smoke', smokeTestRoutes);
 
 // app.use('/game-backend', gameRoutes);
 // app.use('/room-backend', roomRoutes);
