@@ -4,8 +4,8 @@ var jwt = require('jsonwebtoken');
 const Alpaca = require('@alpacahq/alpaca-trade-api')
 var request = require('request-promise');
 
-const hist_data = require('../algo/retro_tester')
-//
+// const x = require('../algo/retro_tester')
+const api_toucher = require('../algo/api_toucher')
 
 console.log(process.env.ALPACA_PAPER_KEY)
 
@@ -31,7 +31,19 @@ router.get('/', function (req, res, next) {
 
 router.get('/polygon', function (req, res, next) {
 
-  hist_data.polygon_historical_data().then((result) => {
+  api_toucher.polygon_historical_data().then((result) => {
+    res.status(200).json({
+      message: 'success',
+      obj: result
+    });
+  })
+
+});
+
+router.get('/symbols', function (req, res, next) {
+
+  api_toucher.polygon_all_symbols().then((result) => {
+    console.log(result["symbols"].length);
     res.status(200).json({
       message: 'success',
       obj: result
