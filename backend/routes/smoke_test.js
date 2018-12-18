@@ -6,6 +6,8 @@ var request = require('request-promise');
 
 // const x = require('../algo/retro_tester')
 const api_toucher = require('../algo/api_toucher')
+const retro_tester = require('../algo/retro_tester')
+const Example = require('../algo/algorithm');
 
 console.log(process.env.ALPACA_PAPER_KEY)
 
@@ -31,10 +33,10 @@ router.get('/', function (req, res, next) {
 
 router.get('/polygon', function (req, res, next) {
 
-  api_toucher.polygon_historical_data().then((result) => {
+  api_toucher.polygon_historical_data('BCRX').then((result) => {
     res.status(200).json({
       message: 'success',
-      obj: result
+      obj: result["ticks"]
     });
   })
 
@@ -42,7 +44,7 @@ router.get('/polygon', function (req, res, next) {
 
 router.get('/symbols', function (req, res, next) {
 
-  api_toucher.polygon_all_symbols().then((result) => {
+  api_toucher.polygon_all_symbols(3).then((result) => {
     console.log(result["symbols"].length);
     res.status(200).json({
       message: 'success',
@@ -52,4 +54,23 @@ router.get('/symbols', function (req, res, next) {
 
 });
 
+router.get('/promise', function (req, res, next) {
+  api_toucher.promise.then((result) => {
+    console.log(Example)
+    res.status(200).json({
+      message: 'success',
+      obj: result
+    });
+  });
+})
+
+router.get('/retro', function (req, res, next) {
+  retro_tester.fullRetroTest.then((result) => {
+    console.log(Example)
+    res.status(200).json({
+      message: 'success',
+      obj: result
+    });
+  });
+})
 module.exports = router;
