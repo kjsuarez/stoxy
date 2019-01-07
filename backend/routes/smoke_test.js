@@ -7,9 +7,8 @@ var request = require('request-promise');
 // const x = require('../algo/retro_tester')
 const api_toucher = require('../algo/api_toucher')
 const retro_tester = require('../algo/retro_tester')
+// const sync_tester = require('../algo/sync_tester')
 const Example = require('../algo/algorithm');
-
-console.log(process.env.ALPACA_PAPER_KEY)
 
 router.get('/', function (req, res, next) {
 
@@ -20,7 +19,6 @@ router.get('/', function (req, res, next) {
   })
 
   alpaca.getAccount().then((account) => {
-    console.log('Current Account:', account)
 
     res.status(200).json({
       message: 'success',
@@ -45,7 +43,6 @@ router.get('/polygon', function (req, res, next) {
 router.get('/symbols', function (req, res, next) {
 
   api_toucher.polygon_all_symbols(3).then((result) => {
-    console.log(result["symbols"].length);
     res.status(200).json({
       message: 'success',
       obj: result
@@ -54,9 +51,17 @@ router.get('/symbols', function (req, res, next) {
 
 });
 
+router.get('/save-api-data', function(req, res, next) {
+  api_toucher.saveApiData().then((result) => {
+    res.status(200).json({
+      message: 'success',
+      obj: result
+    });
+  })
+})
+
 router.get('/promise', function (req, res, next) {
   api_toucher.promise.then((result) => {
-    console.log(Example)
     res.status(200).json({
       message: 'success',
       obj: result
@@ -64,13 +69,22 @@ router.get('/promise', function (req, res, next) {
   });
 })
 
+// router.get('/sync-promise', function (req, res, next) {
+//   sync_tester.consecutive_async_wrapped_in_promise.then((result) => {
+//     res.status(200).json({
+//       message: 'success',
+//       obj: result
+//     });
+//   });
+// })
+
 router.get('/retro', function (req, res, next) {
-  retro_tester.fullRetroTest.then((result) => {
-    console.log(Example)
+  retro_tester.fullRetroTest().then((result) => {
     res.status(200).json({
       message: 'success',
       obj: result
     });
   });
 })
+
 module.exports = router;

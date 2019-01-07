@@ -4,6 +4,7 @@
 package-lock.json
 nodemon.json
 *.zip
+*.txt
 
 # compiled output
 /dist
