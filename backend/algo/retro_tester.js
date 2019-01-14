@@ -32,69 +32,45 @@ function fullRetroTest(){
       crlfDelay: Infinity
     });
 
+    // for each line of history file (where a line represents up to 5 years of historical day data)
     rl.on('line', (line) => {
       hist_data = JSON.parse(line)
-      console.log(`Line from file: ${hist_data["symbol"]}`);
+
+      //check that stock is mature enough run through algo
+      if (isMature(hist_data)) {
+
+        // starting x days into hist_data, loop through hist_data
+        // where x is an algo var
+        for (var day_in_hist = earliestBuyDate(); day_in_hist < hist_data["ticks"].length; day_in_hist++) {
+
+          // console.log("day " + day_in_hist + " of "+ hist_data["ticks"].length);
+
+          total_output["total days"] +=1;
+
+          if (todayPassesAlgorithm(hist_data["ticks"], day_in_hist)) {
+            // make note of purchase
+            results.push("made a purchase")
+            total_output["buys"] +=1;
+            //console.log( hist_data["ticks"].length + " days of history for " + hist_data["symbol"]);
+
+            // loop through hist_data from this day in time to
+            // end of data looking for when sell would be made
+          }else{
+            results.push("did not make a purchase")
+            total_output["no_buy_days"] +=1
+
+          }
+
+        }
+        console.log( `${hist_data["ticks"].length} days of history for ${hist_data["symbol"]}. output: ${JSON.stringify(total_output)}`);
+      }
+
     });
 
-    resolve("*resolution*");
+    rl.on('close', (summery) => {
+      resolve(total_output);
+    })
 
-
-    //#####################
-
-    // // pull available symbols from polygon into an array
-    // getAllSymbols(750).then((all_stocks) => {
-    //
-    //   console.log("got symbols");
-    //
-    //   all_stocks = all_stocks["symbols"];
-    //
-    //   // loop through stock array
-    //   all_stocks.forEach((stock, index) => {
-    //
-    //     stock = stock["symbol"];
-    //     console.log(index)
-    //
-    //
-    //
-    //     // pull x years of historal data from polygon
-    //     // where x is a retro_tester var
-    //
-    //
-    //     getYearsOfData(stock, years_of_data).then((stock_history, z = index) => {
-    //
-    //       if (stock_history["ticks"].length > 1261) {
-    //         console.log("***HEREHEREHEREHEREHERE***");
-    //       }
-    //       console.log("stock number " +z+ ", pulled " + stock_history["ticks"].length + " days of history for " + stock);
-    //
-    //       //check that stock is mature enough run through algo
-    //       if (isMature(stock_history)) {
-    //
-    //         // starting x days into hist_data, loop through hist_data
-    //         // where x is an algo var
-    //         for (var day_in_hist = earliestBuyDate(); day_in_hist < stock_history["ticks"].length; day_in_hist++) {
-    //
-    //           // console.log("day " + day_in_hist + " of "+ stock_history["ticks"].length);
-    //
-    //           if (todayPassesAlgorithm(stock_history["ticks"], day_in_hist)) {
-    //             // make note of purchase
-    //             results.push("made a purchase")
-    //
-    //             // loop through hist_data from this day in time to
-    //             // end of data looking for when sell would be made
-    //           }else{
-    //             results.push("did not make a purchase")
-    //           }
-    //
-    //         }
-    //       }
-    //     })
-    //   })
-    //   console.log("results: " + results);
-    //   resolve("*resolution*");
-    //
-    // });
   });
 }
 
